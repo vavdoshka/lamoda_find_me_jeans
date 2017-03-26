@@ -1,0 +1,6 @@
+appdirs==1.4.3
+packaging==16.8
+pycharm===debug
+pyparsing==2.2.0
+selenium==3.3.0
+six==1.10.0

@@ -12,7 +12,7 @@ from selenium.webdriver.common.by import By
 
 from pyvirtualdisplay import Display
 
-logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 LOGGER = logging.getLogger("lamoda")
 
 TIMEOUT = 5
@@ -80,6 +80,8 @@ def iterate_products(browser):
 
 
 if __name__ == '__main__':
+    display = None
+    browser = None
     try:
         display = Display(visible=0, size=(1024, 768))
         display.start()
@@ -93,6 +95,8 @@ if __name__ == '__main__':
             iterate_products(browser)
     finally:
         LOGGER.debug("done")
-        display.stop()
-        browser.close()
+        if display is not None:
+            display.stop()
+        if browser is not None:
+            browser.close()
 

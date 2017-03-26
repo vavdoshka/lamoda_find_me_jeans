@@ -2,12 +2,15 @@
 import sys
 import time
 import logging
+
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+
+from pyvirtualdisplay import Display
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 LOGGER = logging.getLogger("lamoda")
@@ -78,6 +81,8 @@ def iterate_products(browser):
 
 if __name__ == '__main__':
     try:
+        display = Display(visible=0, size=(1024, 768))
+        display.start()
         browser = webdriver.Chrome()
         browser.get(JEANS_LINK)
 
@@ -86,8 +91,8 @@ if __name__ == '__main__':
         while next_page_with_products_is_present(browser):
             LOGGER.debug("next page")
             iterate_products(browser)
-    except:
-        raise
-    else:
+    finally:
         LOGGER.debug("done")
+        display.stop()
         browser.close()
+

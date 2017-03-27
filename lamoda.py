@@ -12,12 +12,12 @@ from selenium.webdriver.common.by import By
 
 from pyvirtualdisplay import Display
 
-logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 LOGGER = logging.getLogger("lamoda")
 
 TIMEOUT = 5
 
-JEANS_LINK = u"https://www.lamoda.by/c/513/clothes-muzhskie-d-insy/?sitelink=topmenuM&l=3&size_values=33"
+JEANS_LINK = u"https://www.lamoda.by/c/513/clothes-muzhskie-d-insy/?sitelink=topmenuM&l=3&size_values=33%2C34"
 JEANS_SIZES = ("33/36", "34/36")
 
 def hover(wd, element):
@@ -93,8 +93,8 @@ if __name__ == '__main__':
         while next_page_with_products_is_present(browser):
             LOGGER.debug("next page")
             iterate_products(browser)
+        LOGGER.info("Finished Search")
     finally:
-        LOGGER.debug("done")
         if display is not None:
             display.stop()
         if browser is not None:

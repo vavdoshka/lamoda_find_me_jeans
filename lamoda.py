@@ -6,7 +6,7 @@ import logging
 
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium import webdriver
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, WebDriverException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
@@ -14,7 +14,7 @@ from pyvirtualdisplay import Display
 
 from dispatch import dispatch_email_via_gmail
 
-logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 LOGGER = logging.getLogger("lamoda")
 
 TIMEOUT = 5
@@ -104,8 +104,10 @@ if __name__ == '__main__':
         dispatch_email_via_gmail('\n'.join(list_of_products))
         LOGGER.info("Email Sent")
     finally:
-        if display is not None:
-            display.stop()
-        if browser is not None:
-            browser.close()
-
+            if display is not None:
+                display.stop()
+            try:
+                if browser is not None:
+                    browser.close()
+            except WebDriverException as e:
+                LOGGER.warn(e.msg)

@@ -23,8 +23,10 @@ LOGGER = logging.getLogger("lamoda")
 
 TIMEOUT = 5
 
-JEANS_LINK = u"https://www.lamoda.by/c/513/clothes-muzhskie-d-insy/?sitelink=topmenuM&l=3&size_values=33%2C34"
-JEANS_SIZES = ("33/36", "34/36")
+# JEANS_LINK = u"https://www.lamoda.by/c/513/clothes-muzhskie-d-insy/?sitelink=topmenuM&l=3&size_values=33%2C34"
+JEANS_LINK = u"https://www.lamoda.by/c/513/clothes-muzhskie-d-insy/?sitelink=topmenuM&l=3&size_values=35"
+# JEANS_SIZES = ("33/36", "34/36")
+JEANS_SIZES = ("30/34", "34/36")
 
 def hover(wd, element):
     hov = ActionChains(wd).move_to_element(element)
@@ -51,7 +53,7 @@ def wait_element_location_and_get_list(dw, class_name):
 def get_jeans_data(size, jeans_text, jeans_link):
     data = []
     data.append(u'\n'.join(jeans_text.split('\n')[1:-1])) # jeans brand and additional info
-    data.append(u"Size: {} Price: {}".format(size, jeans_text.split('\n')[0]))
+    data.append(u"\nSize: {} Price: {}\n".format(size, jeans_text.split('\n')[0]))
     data.append(jeans_link)
     return ''.join(data)
 
@@ -105,7 +107,7 @@ if __name__ == '__main__':
             list_of_products.extend(iterate_products(browser))
         LOGGER.info("Finished Search")
         LOGGER.info("Sending Email")
-        dispatch_email_via_gmail('\n'.join(list_of_products))
+        dispatch_email_via_gmail('\n\n'.join(list_of_products))
         LOGGER.info("Email Sent")
     finally:
             if display is not None:

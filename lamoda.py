@@ -47,7 +47,7 @@ def wait_element_location_and_get_list(dw, class_name):
 def get_jeans_data(size, jeans_text, jeans_link):
     data = []
     data.append(u'\n'.join(jeans_text.split('\n')[1:-1])) # jeans brand and additional info
-    data.append(u"Size: %s Price: %s", size, jeans_text.split('\n')[0])
+    data.append(u"Size: {} Price: {}".format(size, jeans_text.split('\n')[0]))
     data.append(jeans_link)
     return ''.join(data)
 

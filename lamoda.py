@@ -23,10 +23,8 @@ LOGGER = logging.getLogger("lamoda")
 
 TIMEOUT = 5
 
-# JEANS_LINK = u"https://www.lamoda.by/c/513/clothes-muzhskie-d-insy/?sitelink=topmenuM&l=3&size_values=33%2C34"
-JEANS_LINK = u"https://www.lamoda.by/c/513/clothes-muzhskie-d-insy/?sitelink=topmenuM&l=3&size_values=35"
-# JEANS_SIZES = ("33/36", "34/36")
-JEANS_SIZES = ("30/34", "34/36")
+JEANS_LINK = u"https://www.lamoda.by/c/513/clothes-muzhskie-d-insy/?sitelink=topmenuM&l=3&size_values=33%2C34"
+JEANS_SIZES = ("33/36", "34/36")
 
 def hover(wd, element):
     hov = ActionChains(wd).move_to_element(element)

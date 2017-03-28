@@ -9,8 +9,9 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-
 from pyvirtualdisplay import Display
+
+from dispatch import dispatch_email_via_gmail
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 LOGGER = logging.getLogger("lamoda")
@@ -42,10 +43,12 @@ def wait_element_location_and_get_list(dw, class_name):
     WebDriverWait(dw, TIMEOUT).until(element_present)
     return dw.find_elements_by_class_name(class_name)
 
-def inform_about_jeans(size, jeans_text, jeans_link):
-    LOGGER.info(u"Size: %s Price: %s", size, jeans_text.split('\n')[0])
-    LOGGER.info(u'\n'.join(jeans_text.split('\n')[1:-1]))
-    LOGGER.info(jeans_link)
+def get_jeans_data(size, jeans_text, jeans_link):
+    data = []
+    data.append(u'\n'.join(jeans_text.split('\n')[1:-1])) # jeans brand and additional info
+    data.append(u"Size: %s Price: %s", size, jeans_text.split('\n')[0])
+    data.append(jeans_link)
+    return ''.join(data)
 
 
 def close_popup(wd):
@@ -65,19 +68,21 @@ def iterate_product_sizes(dw, jeans):
     sizes = wait_element_location_and_get_list(jeans, "products-list-item__size-item")
     jeans_link = jeans.find_element_by_class_name("products-list-item__link").get_attribute("href")
     jeans_text = jeans.text
-
+    jeans_data = []
     for size in sizes:
         if size.text in JEANS_SIZES:
-            inform_about_jeans(size.text, jeans_text, jeans_link)
+            jeans_data.append(get_jeans_data(size.text, jeans_text, jeans_link))
+    return jeans_data
 
 
 def iterate_products(browser):
     time.sleep(TIMEOUT)
     close_popup(browser)
-    list_of_products = wait_element_location_and_get_list(browser, "products-list-item")
-    for product in list_of_products:
-        iterate_product_sizes(browser, product)
-
+    product_data = []
+    products = wait_element_location_and_get_list(browser, "products-list-item")
+    for product in products:
+        product_data.extend(iterate_product_sizes(browser, product))
+    return product_data
 
 if __name__ == '__main__':
     display = None
@@ -87,13 +92,16 @@ if __name__ == '__main__':
         display.start()
         browser = webdriver.Chrome()
         browser.get(JEANS_LINK)
-
-        iterate_products(browser)
+        list_of_products = []
+        list_of_products.extend(iterate_products(browser))
         LOGGER.debug("1st page done")
         while next_page_with_products_is_present(browser):
             LOGGER.debug("next page")
-            iterate_products(browser)
+            list_of_products.extend(iterate_products(browser))
         LOGGER.info("Finished Search")
+        LOGGER.info("Sending Email")
+        dispatch_email_via_gmail('\n'.join(list_of_products))
+        LOGGER.info("Email Sent")
     finally:
         if display is not None:
             display.stop()

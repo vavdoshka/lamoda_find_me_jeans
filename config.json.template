@@ -1,0 +1,5 @@
+{
+  "mailFrom": "user@gmail.com",
+  "mailTo": "A <a@xyz.com>",
+  "mailPassword": "GMail password"
+}

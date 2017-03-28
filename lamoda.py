@@ -14,7 +14,11 @@ from pyvirtualdisplay import Display
 
 from dispatch import dispatch_email_via_gmail
 
-logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+logging.basicConfig(filename='/tmp/lamoda.log',
+                    format='%(asctime)s %(levelname)s %(message)s',
+                    filemode='w',
+                    level=logging.DEBUG)
+
 LOGGER = logging.getLogger("lamoda")
 
 TIMEOUT = 5

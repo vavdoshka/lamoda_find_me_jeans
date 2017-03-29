@@ -1,9 +1,9 @@
-from gmail import GMail, Message
-import json
-import os
+import telepot
+from config import TOKEN, CHAT_ID
 
-def dispatch_email_via_gmail(msg):
-    config = json.load(open(os.path.join(os.path.dirname(__file__), "config.json")))
-    gmail = GMail(config['mailFrom'], config['mailPassword'])
-    msg = Message("Latest News From Find Me Jeans", to=config['mailTo'], text=msg)
-    gmail.send(msg)
+def dispatch_to_telegram_chat(msg_list):
+    bot = telepot.Bot(TOKEN)
+    bot.sendMessage("Hello Here What I found Today")
+    for msg in msg_list:
+        bot.sendMessage(CHAT_ID, msg)
+    bot.sendMessage("See you")

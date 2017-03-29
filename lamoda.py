@@ -12,7 +12,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from pyvirtualdisplay import Display
 
-from dispatch import dispatch_email_via_gmail
+from dispatch import dispatch_to_telegram_chat
 
 logging.basicConfig(filename='/tmp/lamoda.log',
                     format='%(asctime)s %(levelname)s %(message)s',
@@ -105,7 +105,7 @@ if __name__ == '__main__':
             list_of_products.extend(iterate_products(browser))
         LOGGER.info("Finished Search")
         LOGGER.info("Sending Email")
-        dispatch_email_via_gmail('\n\n'.join(list_of_products))
+        dispatch_to_telegram_chat(list_of_products)
         LOGGER.info("Email Sent")
     finally:
             if display is not None:

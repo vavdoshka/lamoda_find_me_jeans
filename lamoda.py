@@ -104,9 +104,9 @@ if __name__ == '__main__':
             LOGGER.debug("next page")
             list_of_products.extend(iterate_products(browser))
         LOGGER.info("Finished Search")
-        LOGGER.info("Sending Email")
+        LOGGER.info("Sending Messages in Chat")
         dispatch_to_telegram_chat(list_of_products)
-        LOGGER.info("Email Sent")
+        LOGGER.info("Dispatch Done")
     finally:
             if display is not None:
                 display.stop()
